@@ -8,12 +8,12 @@
 </head>
 <body>
 
- <!-- Start Header -->
-    <div class="topbar bg-brand-3 pt-15 pb-15 font-md">
+       <div class="topbar bg-brand-3 pt-15 pb-15 font-md">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 align-self-center">
-                    <span class="date text-muted">Today: 4 November, 2025</span>
+                    <!-- <span class="date text-muted">Today: 4 November, 2025</span> -->
+                    <span class="date text-muted"><?php echo wp_date('d F Y', ); ?></span>
                 </div>
                 <div class="col-sm-6 text-right align-self-center">
                     <ul class="social-network d-inline-block list-inline  mb-0 float-right">
@@ -27,15 +27,18 @@
         </div>
     </div>
 
-
         <header class="main-header header-sticky header-fluid">
         <div class="position-relative">
             <div class="container-fluid align-self-center">
                 <div class="header-style-1 header-style-2">
                     <div class="logo">
-                        <a href="index-2.html">
-                            <img class="light-mode" src="assets/imgs/theme/logo.svg" alt="flow">
-                            <img class="darrk-mode" src="assets/imgs/theme/logo-white.svg" alt="flow">
+                        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                             <?php 
+                                if ( function_exists( 'the_custom_logo' ) ) {
+                                    the_custom_logo();
+                                }
+                             ?>
+                            
                         </a>
                     </div>
                     <div class="main-nav d-none d-lg-block">
@@ -138,4 +141,3 @@
 
         </div>
     </header>
-
