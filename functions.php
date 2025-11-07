@@ -23,50 +23,33 @@ add_action( 'after_setup_theme', 'flow_theme_setup' );
 
 
 
+
+
 if ( ! function_exists( 'flow_enqueue_all_assets' ) ) {
     function flow_enqueue_all_assets() {
-        $theme_dir = get_stylesheet_directory();       // full path on disk
-        $theme_uri = get_stylesheet_directory_uri();   // URL
+        // Enqueue CSS files in specific order
+        wp_enqueue_style('flow-grid', get_template_directory_uri() . '/assets/css/vendor/grid.min.css');
+        wp_enqueue_style('flow-owl-carousel', get_template_directory_uri() . '/assets/css/vendor/owl.carousel.min.css');
+        wp_enqueue_style('flow-ticker', get_template_directory_uri() . '/assets/css/vendor/ticker-style.css');
+        wp_enqueue_style('flow-elegant-icons', get_template_directory_uri() . '/assets/css/vendor/elegant-icons.css');
+        wp_enqueue_style('flow-slick', get_template_directory_uri() . '/assets/css/vendor/slick.css');
+        wp_enqueue_style('flow-slicknav', get_template_directory_uri() . '/assets/css/vendor/slicknav.css');
+        wp_enqueue_style('flow-animate', get_template_directory_uri() . '/assets/css/vendor/animate.min.css');
+        wp_enqueue_style('flow-style', get_template_directory_uri() . '/assets/css/style.css');
+        wp_enqueue_style('flow-widgets', get_template_directory_uri() . '/assets/css/widgets.css');
+        wp_enqueue_style('flow-responsive', get_template_directory_uri() . '/assets/css/responsive.css');
 
-        $assets_dir = $theme_dir . '/assets';
-        if ( ! is_dir( $assets_dir ) ) {
-            return;
-        }
-
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $assets_dir, RecursiveDirectoryIterator::SKIP_DOTS ),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        );
-
-        foreach ( $iterator as $file ) {
-            if ( ! $file->isFile() ) {
-                continue;
-            }
-
-            $ext = strtolower( pathinfo( $file->getFilename(), PATHINFO_EXTENSION ) );
-            if ( $ext !== 'css' && $ext !== 'js' ) {
-                continue;
-            }
-
-            // Build a relative path from theme root and corresponding URL
-            $path_on_disk = $file->getPathname();
-            $rel_path = str_replace( array( '\\', '/' ), '/', substr( $path_on_disk, strlen( $theme_dir ) ) ); // e.g. /assets/css/main.css
-            $rel_path = ltrim( $rel_path, '/' );
-            $file_url = trailingslashit( $theme_uri ) . $rel_path;
-
-            // Create a safe handle: prefix + sanitized relative path (slashes -> dashes)
-            $handle = 'flow-' . sanitize_key( str_replace( '/', '-', $rel_path ) );
-
-            // Use filemtime for versioning if available
-            $ver = @filemtime( $path_on_disk ) ?: null;
-
-            if ( $ext === 'css' ) {
-                wp_enqueue_style( $handle, $file_url, array(), $ver );
-            } else { // js
-                // load in footer by default; no default deps
-                wp_enqueue_script( $handle, $file_url, array(), $ver, true );
-            }
-        }
+        // Enqueue JavaScript files in specific order
+        wp_enqueue_script('modernizr', get_template_directory_uri() . '/assets/js/vendor/modernizr-3.5.0.min.js', array(), '3.5.0', true);
+        wp_enqueue_script('jquery');  // WordPress already includes jQuery
+        wp_enqueue_script('color-modes', get_template_directory_uri() . '/assets/js/vendor/color-modes.js', array('jquery'), null, true);
+        wp_enqueue_script('bootstrap', get_template_directory_uri() . '/assets/js/vendor/bootstrap.min.js', array('jquery'), null, true);
+        wp_enqueue_script('slicknav', get_template_directory_uri() . '/assets/js/vendor/jquery.slicknav.js', array('jquery'), null, true);
+        wp_enqueue_script('slick', get_template_directory_uri() . '/assets/js/vendor/slick.min.js', array('jquery'), null, true);
+        wp_enqueue_script('wow', get_template_directory_uri() . '/assets/js/vendor/wow.min.js', array('jquery'), null, true);
+        wp_enqueue_script('scrollUp', get_template_directory_uri() . '/assets/js/vendor/jquery.scrollUp.min.js', array('jquery'), null, true);
+        wp_enqueue_script('theia-sticky', get_template_directory_uri() . '/assets/js/vendor/jquery.theia.sticky.js', array('jquery'), null, true);
+        wp_enqueue_script('flow-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
     }
     add_action( 'wp_enqueue_scripts', 'flow_enqueue_all_assets', 20 );
 }
