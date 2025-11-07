@@ -1,25 +1,23 @@
 <?php
-/**
- * Enqueue all CSS and JS files from the theme's /assets directory (recursively).
- *
- * Place this in your theme's functions.php. It will:
- *  - find all .css and .js files under /assets
- *  - register and enqueue them with a handle based on their path
- *  - use file modification time as the version for cache-busting
- *  - load JS in the footer
- */
-
 
 function flow_theme_setup() {
-   $defaults = array(
+    	add_theme_support('post-thumbnails');
+   $defaults = [
 		'height'               => 100,
 		'width'                => 400,
 		'flex-height'          => true,
 		'flex-width'           => true,
-		'header-text'          => array( 'site-title', 'site-description' ),
+		'header-text'          => [ 'site-title', 'site-description' ],
 		'unlink-homepage-logo' => true, 
-	);
+   ];
 	add_theme_support( 'custom-logo', $defaults );
+
+    register_nav_menus( 
+	    [
+            'primary_menu' => __( 'Primary Menu', 'text_domain' ),
+	    	'footer_menu'  => __( 'Footer Menu', 'text_domain' ),
+        ]
+	);
 }
 add_action( 'after_setup_theme', 'flow_theme_setup' );
 
