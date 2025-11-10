@@ -145,6 +145,83 @@ get_header();
             </div>
         </div>
     </section>
+
+        <section class="recent-posts pb-65">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="header-title mb-25">
+                            <h3 class="font-heading mb-0 wow fadeIn animated">Recent Articles</h3>
+                        </div>
+                        <div class="loop-list loop-list-style-1  mb-md-30">
+                            <?php 
+                                $args = [
+                                    'orderby' => 'date',
+                                    'order'   => 'DESC',
+                                    'posts_per_page' => 4,
+                                    'post__not_in'            => get_option( 'sticky_posts' )
+                                ];
+                                $query = new WP_Query( $args );
+                                if ( $query->have_posts() ) {
+                                    while ( $query->have_posts() ) {
+                                        $query->the_post();
+                                        ?>
+                                        <article class="hover-up-3 border-radius-10 overflow-hidden wow fadeIn animated">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="post-thumb position-relative" style="background-image: url(<?php the_post_thumbnail_url( 'full' ); ?>)">
+                                                        <a class="img-link" href="<?php the_permalink(); ?>"></a>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-7 align-self-center">
+                                                    <div class="post-content pr-30">
+                                                        <div class="post-meta-1 mb-20">
+                                                            <?php
+                                                            $categories = get_the_category();
+                                                            if ( ! empty( $categories ) ) {
+                                                                $category = esc_html( $categories[0]->name );
+                                                                $category_link = esc_url( get_category_link( $categories[0]->term_id ) );
+                                                                echo '<a href="' . $category_link . '" class="tag-category bg-brand-1 shadown-1 text-dark button-shadow hover-up-3" tabindex="0">' . $category . '</a>';
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                        <h4 class="post-title mb-40">
+                                                                <a class="" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                                        </h4>   
+                                                        <div class="d-flex">
+                                                            <div class="post-meta-2 font-md d-flex w-70">
+                                                                <a class="align-self-center" href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" tabindex="0">
+                                                                    <?php echo get_avatar( get_the_author_meta( 'ID' ), 64 ); ?>        
+                                                                </a>
+                                                                <div class="mb-0">  
+                                                                    <a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" tabindex="0"> <strong class="author-namge"><?php the_author(); ?></strong></a>
+                                                                    <p class="post-on font-sm text-grey-400 mb-0 mt-0"><?php echo get_the_date(); ?></p>        
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-right post-list-icon align-self-center w-30">
+                                                                <a><i class="elegant-icon icon_ribbon_alt "></i></a>
+                                                                <a><i class="elegant-icon icon_heart_alt "></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        <?php
+                                    }
+                                    wp_reset_postdata();
+                                }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 primary-sidebar sticky-sidebar">
+                        <?php get_sidebar('sidebar-1'); ?>
+                                
+                    </div>
+                </div>
+            </div>
+        </section>
+
 </main>
 
 <?php
